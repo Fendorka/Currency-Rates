@@ -1,0 +1,17 @@
+<template>
+    <div style="height: 90%">
+        <lightning-datatable
+                label="Currency Pairs"
+                key-field="id"
+                data={data}
+                columns={columns}
+                hide-checkbox-column
+                resize-column-disabled>
+        </lightning-datatable>
+    </div>
+    <div class="slds-align_absolute-center">
+        <lightning-badge label={base}></lightning-badge>
+        <lightning-button onclick={getRates} label="Update" variant="brand" icon-name="action:update"></lightning-button>
+        <lightning-badge label={date}></lightning-badge>
+    </div>
+</template>

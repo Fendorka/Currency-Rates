@@ -17,8 +17,6 @@ export default class CurrencyCalclulatorApp extends LightningElement {
   }
 
   getRates() {
-    console.log("CurrencyCalclulatorApp::getRates:: this.base=", this.base);
-
     getCurrencyData({ baseCurrency: this.base })
       .then((response) => {
         this.base = response.base;
@@ -27,7 +25,7 @@ export default class CurrencyCalclulatorApp extends LightningElement {
         if (!this.data.length) {
           this.error = "Fetched currency data is empty";
         }
-        console.log("CurrencyCalclulatorApp::getRates:: response=", response);
+        // console.log("CurrencyCalclulatorApp::getRates:: response=", response);
       })
       .catch((error) => {
         console.error("API error: ", error);
@@ -51,7 +49,5 @@ export default class CurrencyCalclulatorApp extends LightningElement {
     }
 
     this.favourites = [...this.favourites];
-
-    console.log("handleFavouriteCurrencyChange", toggledFav, this.favourites);
   }
 }

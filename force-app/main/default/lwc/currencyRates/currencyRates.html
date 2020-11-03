@@ -1,5 +1,5 @@
 <template>
-  <template if:true={sortedData.length}>
+  <template if:true={isLoaded}>
     <c-simple-pagination tabledata={sortedData}> </c-simple-pagination>
 
     <div class="slds-align_absolute-center">
@@ -19,7 +19,7 @@
       ></lightning-button>
 
       <lightning-button
-        onclick={getRates}
+        onclick={refreshRates}
         label="Update"
         variant="brand"
         icon-name="action:update"
@@ -29,43 +29,12 @@
     </div>
   </template>
 
-  <!--Use template if:true to display/hide popup based on isModalOpen value-->
-  <template if:true={isModalOpen}>
-    <!-- Modal/Popup Box LWC starts here -->
-    <section
-      role="dialog"
-      tabindex="-1"
-      aria-labelledby="modal-heading-01"
-      aria-modal="true"
-      aria-describedby="modal-content-id-1"
-      class="slds-modal slds-fade-in-open"
-    >
-      <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <h3>Choose base currency</h3>
-        </header>
-        <div class="slds-modal__content" id="modal-content-id-1">
-          <lightning-datatable
-            key-field="id"
-            data={sortedData}
-            columns={columnsChooseCurrency}
-            onrowaction={handleRowAction}
-            hide-checkbox-column
-            resize-column-disabled
-          >
-          </lightning-datatable>
-        </div>
-        <footer class="slds-modal__footer">
-          <button
-            class="slds-button slds-button_neutral"
-            onclick={closeModal}
-            title="OK"
-          >
-            OK
-          </button>
-        </footer>
-      </div>
-    </section>
-    <div class="slds-backdrop slds-backdrop_open"></div>
+  <template if:true={isShownChooseCurrencyModal}>
+    <c-choose-currency-modal
+      currencydata={sortedData}
+      ontogglefavourite={handleFavouriteCurrencyChange}
+      onnewbasecurrency={handleBaseCurrencyChange}
+      onsetmodalvisibility={showChooseCurrencyModal}
+    ></c-choose-currency-modal>
   </template>
 </template>

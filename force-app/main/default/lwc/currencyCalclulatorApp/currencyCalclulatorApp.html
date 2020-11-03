@@ -1,0 +1,33 @@
+<template>
+  <template if:false={isReady}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </template>
+  <lightning-card>
+    <template if:true={error}>
+      <h3>{error}</h3>
+    </template>
+
+    <template if:true={data.length}>
+      <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="6" padding="around-small">
+          <c-currency-rates
+            rates={data}
+            date={date}
+            base={base}
+            favourites={favourites}
+            onnewbasecurrency={handleBaseCurrencyChange}
+            ontogglefavourite={handleFavouriteCurrencyChange}
+          >
+          </c-currency-rates>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="6" padding="around-small">
+          Currency converter placeholder
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+  </lightning-card>
+</template>

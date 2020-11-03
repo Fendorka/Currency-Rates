@@ -1,0 +1,49 @@
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12" padding="around-medium">
+      <lightning-datatable
+        key-field="id"
+        data={currentPageData}
+        columns={columns}
+        hide-checkbox-column
+        resize-column-disabled
+      >
+      </lightning-datatable>
+    </lightning-layout-item>
+
+    <!-- buttons -->
+    <lightning-layout-item size="12" padding="around-medium">
+      <div class="slds-align_absolute-center">
+        <ul class="slds-button-group-row">
+          <template if:true={hasPrev}>
+            <li class="slds-button-group-item">
+              <button class="slds-button slds-button_neutral" onclick={onPrev}>
+                prev
+              </button>
+            </li>
+          </template>
+
+          <template for:each={pagesList} for:item="pageNumber">
+            <li class="slds-button-group-item" key={pageNumber}>
+              <button
+                data-id={pageNumber}
+                class="slds-button slds-button_neutral"
+                onclick={onPageClick}
+              >
+                {pageNumber}
+              </button>
+            </li>
+          </template>
+
+          <template if:true={hasNext}>
+            <li class="slds-button-group-item">
+              <button class="slds-button slds-button_neutral" onclick={onNext}>
+                next
+              </button>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>

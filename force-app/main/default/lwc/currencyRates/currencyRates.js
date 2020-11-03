@@ -1,4 +1,5 @@
 import { LightningElement, api } from "lwc";
+import currencySymbols from "./map";
 
 export default class CurrencyRates extends LightningElement {
   @api rates;
@@ -35,9 +36,10 @@ export default class CurrencyRates extends LightningElement {
       symbols: this.base + " -> " + cur,
       value: rate,
       currency: cur,
-      symbol: "$",
+      symbol: currencySymbols[cur],
       isCurrent: cur === this.base,
       favourite: false,
+      cellClass: "row-is-favourite",
       isFavouriteIcon: "utility:pin"
     }));
     this.data.sort((a, b) => +b.favourite - +a.favourite);

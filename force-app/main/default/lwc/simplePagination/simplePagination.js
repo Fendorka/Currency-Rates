@@ -1,8 +1,22 @@
 import { LightningElement, track, api } from "lwc";
 
 const columns = [
-  { label: "Symbols", fieldName: "symbols", hideDefaultActions: true },
-  { label: "Value", fieldName: "value", hideDefaultActions: true }
+  {
+    label: "Symbols",
+    fieldName: "symbols",
+    hideDefaultActions: true,
+    cellAttributes: {
+      class: { fieldName: "cellClass" }
+    }
+  },
+  {
+    label: "Value",
+    fieldName: "value",
+    hideDefaultActions: true,
+    cellAttributes: {
+      class: { fieldName: "cellClass" }
+    }
+  }
 ];
 
 export default class SimplePagination extends LightningElement {
@@ -20,7 +34,6 @@ export default class SimplePagination extends LightningElement {
   }
   renderButtons = () => {
     this.template.querySelectorAll("button").forEach((but) => {
-      // but.style.backgroundColor = this.page === parseInt(but.dataset.id, 10) ? 'lightgrey' : 'white';
       but.className =
         "slds-button " +
         (this.page === parseInt(but.dataset.id, 10)

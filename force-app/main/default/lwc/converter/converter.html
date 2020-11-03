@@ -10,19 +10,7 @@
       Base - {basecurrency} Target - {targetCurrency} Sum={bcAmount}
       <!-- <div style={backgroundStyle}> -->
 
-      <!-- base -->
       <lightning-layout class="slds-m-around_xx-small" multiple-rows="true">
-        <lightning-layout-item size="6" class="slds-p-around--xx-small">
-          <lightning-combobox
-            name="selectBaseCurrency"
-            label="Base Currency"
-            options={getBaseCurrencyOptions}
-            value={basecurrency}
-            onchange={baseCurrencyEntryChange}
-          >
-          </lightning-combobox>
-        </lightning-layout-item>
-
         <lightning-layout-item size="6" class="slds-p-around--xx-small">
           <lightning-input
             name="bcAmount"
@@ -33,21 +21,20 @@
           >
           </lightning-input>
         </lightning-layout-item>
-      </lightning-layout>
 
-      <lightning-layout class="slds-m-around_xx-small" multiple-rows="true">
         <lightning-layout-item size="6" class="slds-p-around--xx-small">
           <lightning-combobox
-            name="selectTargetCurrency"
-            label="Target Currency"
-            options={targetCurrencyOptions}
-            value={targetCurrency}
-            onchange={targetCurrencyEntryChange}
+            name="selectBaseCurrency"
+            label="Base Currency"
+            options={getBaseCurrencyOptions}
+            value={basecurrency}
+            onchange={baseCurrencyEntryChange}
           >
           </lightning-combobox>
         </lightning-layout-item>
+      </lightning-layout>
 
-        <!-- target-->
+      <lightning-layout class="slds-m-around_xx-small" multiple-rows="true">
         <lightning-layout-item size="6" class="slds-p-around--xx-small">
           <lightning-input
             name="entryValueOne"
@@ -57,6 +44,17 @@
             value={tcAmount}
           >
           </lightning-input>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="6" class="slds-p-around--xx-small">
+          <lightning-combobox
+            name="selectTargetCurrency"
+            label="Target Currency"
+            options={targetCurrencyOptions}
+            value={targetCurrency}
+            onchange={targetCurrencyEntryChange}
+          >
+          </lightning-combobox>
         </lightning-layout-item>
       </lightning-layout>
 

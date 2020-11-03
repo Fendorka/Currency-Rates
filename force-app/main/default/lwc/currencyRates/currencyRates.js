@@ -5,11 +5,11 @@ export default class CurrencyRates extends LightningElement {
   @api base;
   @api date;
   @api favourites;
+  @api ratesperpage;
 
   isLoaded = false;
   data;
   favouritesApplied;
-  isShownChooseCurrencyModal = false;
 
   get sortedData() {
     if (!this.rates || !this.rates.length) {
@@ -30,13 +30,13 @@ export default class CurrencyRates extends LightningElement {
   }
 
   prepareData() {
-    this.data = this.rates.map(([k, v], i) => ({
+    this.data = this.rates.map(([cur, rate], i) => ({
       id: i,
-      symbols: k + " -> " + this.base,
-      value: v,
-      currency: k,
+      symbols: this.base + " -> " + cur,
+      value: rate,
+      currency: cur,
       symbol: "$",
-      isCurrent: k === this.base,
+      isCurrent: cur === this.base,
       favourite: false,
       isFavouriteIcon: "utility:pin"
     }));
@@ -67,7 +67,8 @@ export default class CurrencyRates extends LightningElement {
   }
 
   // Change currency modal
-  openModal() {
+  isShownChooseCurrencyModal = false;
+  changeBaseCurrency() {
     this.isShownChooseCurrencyModal = true;
   }
 

@@ -18,6 +18,7 @@
             date={date}
             base={base}
             favourites={favourites}
+            ratesperpage={ratesperpage}
             onnewbasecurrency={handleBaseCurrencyChange}
             ontogglefavourite={handleFavouriteCurrencyChange}
           >
@@ -25,7 +26,11 @@
         </lightning-layout-item>
 
         <lightning-layout-item size="6" padding="around-small">
-          Currency converter placeholder
+          <c-converter
+            rates={data}
+            basecurrency={base}
+            onnewbasecurrency={handleBaseCurrencyChange}
+          ></c-converter>
         </lightning-layout-item>
       </lightning-layout>
     </template>

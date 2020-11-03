@@ -7,10 +7,10 @@ const columns = [
 
 export default class SimplePagination extends LightningElement {
   @api tabledata = [];
+  @api perpage = 5;
 
   @track page = 1;
   @track pages = [];
-  perpage = 5;
   set_size = 5;
 
   columns = columns;

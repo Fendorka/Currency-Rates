@@ -1,0 +1,66 @@
+<template>
+  <div if:true={errorMessage} class="slds-p-top--xx-small">
+    Error: {errorMessage}
+  </div>
+  <template if:true={isLoaded}>
+    <lightning-card
+      title="LWC Exchange Rate Converter"
+      icon-name="standard:currency"
+    >
+      Base - {basecurrency} Target - {targetCurrency} Sum={bcAmount}
+      <!-- <div style={backgroundStyle}> -->
+
+      <!-- base -->
+      <lightning-layout class="slds-m-around_xx-small" multiple-rows="true">
+        <lightning-layout-item size="6" class="slds-p-around--xx-small">
+          <lightning-combobox
+            name="selectBaseCurrency"
+            label="Base Currency"
+            options={getBaseCurrencyOptions}
+            value={basecurrency}
+            onchange={baseCurrencyEntryChange}
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="6" class="slds-p-around--xx-small">
+          <lightning-input
+            name="bcAmount"
+            label="Insert Amount"
+            type="number"
+            value={bcAmount}
+            onchange={baseCurrencyEntryChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <lightning-layout class="slds-m-around_xx-small" multiple-rows="true">
+        <lightning-layout-item size="6" class="slds-p-around--xx-small">
+          <lightning-combobox
+            name="selectTargetCurrency"
+            label="Target Currency"
+            options={targetCurrencyOptions}
+            value={targetCurrency}
+            onchange={targetCurrencyEntryChange}
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+
+        <!-- target-->
+        <lightning-layout-item size="6" class="slds-p-around--xx-small">
+          <lightning-input
+            name="entryValueOne"
+            label="You get"
+            type="number"
+            disabled
+            value={tcAmount}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <!-- </div> -->
+    </lightning-card>
+  </template>
+</template>

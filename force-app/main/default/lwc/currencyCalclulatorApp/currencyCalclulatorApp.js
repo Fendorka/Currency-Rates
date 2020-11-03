@@ -1,7 +1,9 @@
-import { LightningElement } from "lwc";
+import { LightningElement, api } from "lwc";
 import getCurrencyData from "@salesforce/apex/getCurrency.getCurrency";
 
 export default class CurrencyCalclulatorApp extends LightningElement {
+  @api ratesperpage = 10;
+
   data = [];
   base = "EUR";
   date;

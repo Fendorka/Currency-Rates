@@ -1,6 +1,7 @@
 <template>
   <template if:true={isLoaded}>
-    <c-simple-pagination tabledata={sortedData}> </c-simple-pagination>
+    <c-simple-pagination tabledata={sortedData} perpage={ratesperpage}>
+    </c-simple-pagination>
 
     <div class="slds-align_absolute-center">
       <!-- <template if:true={currencyList}>
@@ -15,7 +16,7 @@
       <lightning-button
         variant="brand"
         label={base}
-        onclick={openModal}
+        onclick={changeBaseCurrency}
       ></lightning-button>
 
       <lightning-button

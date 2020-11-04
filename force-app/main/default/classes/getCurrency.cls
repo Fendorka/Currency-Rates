@@ -1,7 +1,6 @@
 public inherited sharing class getCurrency {
   private final static String API_URL = 'https://api.ratesapi.io/api/latest';
-
-  @AuraEnabled
+  @AuraEnabled(cacheable=true)
   public static Map<String, Object> getCurrency(String baseCurrency) {
     String requestURL =
       API_URL + (baseCurrency != null ? '?base=' + baseCurrency : '');
@@ -32,17 +31,10 @@ public inherited sharing class getCurrency {
     }
 
     Map<String, Object> mapJsonData = new Map<String, Object>();
-    // List<String> currencyList = new List<String>();
     if (!String.isBlank(strResponse)) {
       mapJsonData = (Map<String, Object>) JSON.deserializeUntyped(strResponse);
-      // mapJsonData.put('test', 'myvalue');
-      // mapJsonData.put('currencyList', validCurrency);
-      // Object rates = mapJsonData.get('rates');
-      // currencyList = rates.map(rate => rate.currency);
-      System.debug('mapJsonData ===> ' + mapJsonData);
+      // System.debug('mapJsonData ===> ' + mapJsonData);
     }
-
-    // Currency_List__mdt
 
     if (!mapJsonData.isEmpty()) {
       return mapJsonData;

@@ -47,10 +47,9 @@ export default class CurrencyRates extends LightningElement {
   }
 
   applyFavourites() {
-    if (!this.favourites || !this.favourites.length) {
+    if (!this.favourites) {
       return;
     }
-    // console.log("applyFavourites(), fav length=" + this.favourites.length);
     this.data.forEach((row) => {
       let isFav = this.favourites.includes(row.currency);
       row.favourite = isFav;
@@ -69,7 +68,7 @@ export default class CurrencyRates extends LightningElement {
     this.dispatchEvent(selectedEvent);
   }
 
-  // Change currency modal
+  // Change currency Modal
   isShownChooseCurrencyModal = false;
   changeBaseCurrency() {
     this.isShownChooseCurrencyModal = true;
@@ -89,6 +88,7 @@ export default class CurrencyRates extends LightningElement {
   }
 
   handleFavouriteCurrencyChange(event) {
+    this.favouritesApplied = undefined;
     const selectedEvent = new CustomEvent("togglefavourite", {
       detail: event.detail
     });

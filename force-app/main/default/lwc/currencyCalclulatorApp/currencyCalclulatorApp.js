@@ -1,5 +1,7 @@
 import { LightningElement, api } from "lwc";
 import getCurrencyData from "@salesforce/apex/getCurrency.getCurrency";
+import saveFavourites from "@salesforce/apex/UserCurrencyFavourites.saveFavourites";
+import getFavourites from "@salesforce/apex/UserCurrencyFavourites.getFavourites";
 
 export default class CurrencyCalclulatorApp extends LightningElement {
   @api ratesperpage = 10;
@@ -16,6 +18,7 @@ export default class CurrencyCalclulatorApp extends LightningElement {
 
   connectedCallback() {
     this.getRates();
+    this.getUsersFavourites();
   }
 
   getRates() {
@@ -27,10 +30,30 @@ export default class CurrencyCalclulatorApp extends LightningElement {
         if (!this.data.length) {
           this.error = "Fetched currency data is empty";
         }
-        // console.log("CurrencyCalclulatorApp::getRates:: response=", response);
       })
       .catch((error) => {
         console.error("API error: ", error);
+        this.error = "Error: " + error;
+      });
+  }
+
+  getUsersFavourites() {
+    console.log("CurrencyCalclulatorApp::getUsersFavourites:: start");
+
+    getFavourites()
+      .then((response) => {
+        if (response) {
+          this.favourites = response.split(",");
+        } else {
+          this.favourites = [];
+        }
+        console.log(
+          "CurrencyCalclulatorApp::getUsersFavourites:: this.favourites=",
+          this.favourites
+        );
+      })
+      .catch((error) => {
+        console.error("APEX error: ", error);
         this.error = "Error: " + error;
       });
   }
@@ -49,7 +72,20 @@ export default class CurrencyCalclulatorApp extends LightningElement {
     } else {
       this.favourites.push(toggledFav);
     }
-
     this.favourites = [...this.favourites];
+
+    console.log("CurrencyCalclulatorApp::getFavourites:: start!");
+
+    saveFavourites({ favouritesList: this.favourites.join(",") })
+      .then((response) => {
+        console.log(
+          "CurrencyCalclulatorApp::saveFavourites:: response = ",
+          response
+        );
+      })
+      .catch((error) => {
+        console.error("Apex error: ", error);
+        this.error = "Error: " + error;
+      });
   }
 }

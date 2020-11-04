@@ -24,7 +24,6 @@ const columnsChooseCurrency = [
 ];
 
 export default class ChooseCurrencyModal extends LightningElement {
-  // @api isvisible;
   @api currencydata;
   columnsChooseCurrency = columnsChooseCurrency;
 
@@ -33,14 +32,12 @@ export default class ChooseCurrencyModal extends LightningElement {
       detail: true
     });
     this.dispatchEvent(selectedEvent);
-    // this.isModalOpen = true;
   }
   closeModal() {
     const selectedEvent = new CustomEvent("setmodalvisibility", {
       detail: false
     });
     this.dispatchEvent(selectedEvent);
-    // this.isModalOpen = false;
   }
   handleRowAction(event) {
     var action = event.detail.action;
@@ -58,7 +55,6 @@ export default class ChooseCurrencyModal extends LightningElement {
   }
 
   toggleCurrencyPin(currencyCode) {
-    this.favouritesApplied = undefined;
     const selectedEvent = new CustomEvent("togglefavourite", {
       detail: currencyCode
     });

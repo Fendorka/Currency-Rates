@@ -39,8 +39,8 @@ export default class CurrencyRates extends LightningElement {
       symbol: currencySymbols[cur],
       isCurrent: cur === this.base,
       favourite: false,
-      cellClass: "row-is-favourite",
-      isFavouriteIcon: "utility:pin"
+      isFavouriteIcon: "utility:pin",
+      isFavouriteIcon2: ""
     }));
     this.data.sort((a, b) => +b.favourite - +a.favourite);
     this.isLoaded = true;
@@ -55,6 +55,7 @@ export default class CurrencyRates extends LightningElement {
       let isFav = this.favourites.includes(row.currency);
       row.favourite = isFav;
       row.isFavouriteIcon = isFav ? "utility:pinned" : "utility:pin";
+      row.isFavouriteIcon2 = isFav ? "utility:pinned" : "";
       this.data.sort((a, b) => +b.favourite - +a.favourite);
     });
     this.favouritesApplied = this.favourites;

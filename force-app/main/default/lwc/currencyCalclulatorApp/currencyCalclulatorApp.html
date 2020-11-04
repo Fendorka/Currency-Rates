@@ -12,7 +12,11 @@
 
     <template if:true={data.length}>
       <lightning-layout multiple-rows="true">
-        <lightning-layout-item size="6" padding="around-small">
+        <lightning-layout-item
+          size="12"
+          medium-device-size="6"
+          padding="around-small"
+        >
           <c-currency-rates
             rates={data}
             date={date}
@@ -25,7 +29,11 @@
           </c-currency-rates>
         </lightning-layout-item>
 
-        <lightning-layout-item size="6" padding="around-small">
+        <lightning-layout-item
+          size="12"
+          medium-device-size="6"
+          padding="around-small"
+        >
           <c-converter
             rates={data}
             basecurrency={base}

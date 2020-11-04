@@ -6,7 +6,7 @@ const columns = [
     fieldName: "symbols",
     hideDefaultActions: true,
     cellAttributes: {
-      class: { fieldName: "cellClass" }
+      iconName: { fieldName: "isFavouriteIcon2" }
     }
   },
   {

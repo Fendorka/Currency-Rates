@@ -3,6 +3,8 @@
     <c-simple-pagination tabledata={sortedData} perpage={ratesperpage}>
     </c-simple-pagination>
 
+    <lightning-badge label={date}></lightning-badge>
+
     <div class="slds-align_absolute-center">
       <!-- <template if:true={currencyList}>
             <lightning-combobox 
@@ -16,6 +18,7 @@
       <lightning-button
         variant="brand"
         label={base}
+        class="slds-p-around--xx-small"
         onclick={changeBaseCurrency}
       ></lightning-button>
 
@@ -23,9 +26,9 @@
         onclick={refreshRates}
         label="Update"
         variant="brand"
-        icon-name="action:update"
+        class="slds-p-around--xx-small"
+        icon-name="utility:refresh"
       ></lightning-button>
-      <lightning-badge label={date}></lightning-badge>
       <!-- <lightning-badge label={currencyList}></lightning-badge> -->
     </div>
   </template>

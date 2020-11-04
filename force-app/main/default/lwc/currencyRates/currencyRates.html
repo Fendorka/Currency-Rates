@@ -1,35 +1,27 @@
 <template>
   <template if:true={isLoaded}>
+    <div class="slds-m-bottom--small">
+      <lightning-button
+        variant="neutral"
+        label={base}
+        class="slds-p-around--medium"
+        onclick={changeBaseCurrency}
+      ></lightning-button>
+    </div>
+
     <c-simple-pagination tabledata={sortedData} perpage={ratesperpage}>
     </c-simple-pagination>
 
-    <lightning-badge label={date}></lightning-badge>
-
-    <div class="slds-align_absolute-center">
-      <!-- <template if:true={currencyList}>
-            <lightning-combobox 
-            name="Industry" value={base} options={currencyList} onchange={handleChange}>
-        </template>
-        </lightning-combobox>
-        <template if:false={currencyList}>
-            <lightning-badge label={base}></lightning-badge>
-        </template> -->
-
-      <lightning-button
-        variant="brand"
-        label={base}
-        class="slds-p-around--xx-small"
-        onclick={changeBaseCurrency}
-      ></lightning-button>
-
+    <!-- <div class="slds-align_absolute-center"> -->
+    <div class="slds-float_right slds-m-top--large">
+      <lightning-badge label={date}></lightning-badge>
       <lightning-button
         onclick={refreshRates}
         label="Update"
-        variant="brand"
+        variant="neutral"
         class="slds-p-around--xx-small"
         icon-name="utility:refresh"
       ></lightning-button>
-      <!-- <lightning-badge label={currencyList}></lightning-badge> -->
     </div>
   </template>
 

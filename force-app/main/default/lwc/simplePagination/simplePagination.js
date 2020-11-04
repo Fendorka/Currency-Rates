@@ -10,7 +10,7 @@ const columns = [
     }
   },
   {
-    label: "Value",
+    label: "Exchage rates",
     fieldName: "value",
     hideDefaultActions: true,
     cellAttributes: {

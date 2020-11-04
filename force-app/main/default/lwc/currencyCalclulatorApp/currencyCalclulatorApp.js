@@ -25,7 +25,11 @@ export default class CurrencyCalclulatorApp extends LightningElement {
     getCurrencyData({ baseCurrency: this.base })
       .then((response) => {
         this.base = response.base;
-        this.date = response.date;
+        this.date =
+          "Last updated: " +
+          response.date +
+          " " +
+          new Date().toLocaleTimeString();
         this.data = Object.entries(response.rates);
         if (!this.data.length) {
           this.error = "Fetched currency data is empty";

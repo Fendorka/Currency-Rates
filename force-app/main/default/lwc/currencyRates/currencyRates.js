@@ -22,7 +22,6 @@ export default class CurrencyRates extends LightningElement {
     } else if (!this.favouritesApplied) {
       this.applyFavourites();
     }
-    console.log("sortedData()");
     return this.data.filter((row) => !row.isCurrent);
   }
 
@@ -43,6 +42,11 @@ export default class CurrencyRates extends LightningElement {
       isFavouriteIcon2: ""
     }));
     this.data.sort((a, b) => +b.favourite - +a.favourite);
+
+    if (!this.favouritesApplied) {
+      this.applyFavourites();
+    }
+
     this.isLoaded = true;
   }
 
@@ -57,7 +61,7 @@ export default class CurrencyRates extends LightningElement {
       row.isFavouriteIcon2 = isFav ? "utility:pinned" : "";
       this.data.sort((a, b) => +b.favourite - +a.favourite);
     });
-    this.favouritesApplied = this.favourites;
+    this.favouritesApplied = true;
   }
 
   refreshRates() {
@@ -81,6 +85,7 @@ export default class CurrencyRates extends LightningElement {
 
   handleBaseCurrencyChange(event) {
     this.data = undefined;
+    this.favouritesApplied = false;
     const selectedEvent = new CustomEvent("newbasecurrency", {
       detail: event.detail
     });
@@ -88,7 +93,7 @@ export default class CurrencyRates extends LightningElement {
   }
 
   handleFavouriteCurrencyChange(event) {
-    this.favouritesApplied = undefined;
+    this.favouritesApplied = false;
     const selectedEvent = new CustomEvent("togglefavourite", {
       detail: event.detail
     });

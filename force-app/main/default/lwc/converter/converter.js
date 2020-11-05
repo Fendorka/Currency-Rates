@@ -1,36 +1,14 @@
-import { LightningElement, track, api } from "lwc";
-// import { getObjectInfo, getPicklistValues } from 'lightning/uiObjectInfoApi';
-// import { fireToast } from 'c/lwcutils';
-
-// images
-// import bitcoinBackgroundUrl from '@salesforce/resourceUrl/bitcoinBackground_small';
-
-// apex methods
-// import apexMakeHTTPCall from '@salesforce/apex/ConverterSupportClassLightning.makeHTTPCall';
-// import apexDefaultCurrencyEntryChanges
-//   from '@salesforce/apex/ConverterSupportClassLightning.defaultCurrencyEntryChanges';
-// import apextargetCurrencyEntryChanges
-//   from '@salesforce/apex/ConverterSupportClassLightning.targetCurrencyEntryChanges';
-
-// SObject
-// import RATE_CODE_OBJECT from '@salesforce/schema/Rate_Code__c';
-
-// picklist fields
-// import CURRENCY_FIELD from '@salesforce/schema/Rate_Code__c.Currency__c';
+import { LightningElement, api } from "lwc";
 
 export default class Converter extends LightningElement {
   @api basecurrency;
   @api rates;
 
-  isLoaded;
   targetCurrency;
   baseCurrencyOptions;
-  targetCurrencyOptions; // picklist values
+  targetCurrencyOptions;
   bcAmount = 1;
   tcAmount;
-
-  @track showspinner = false;
-  @track errorMessage;
 
   get backgroundStyle() {
     return `height:10rem;background-repeat: no-repeat;`;
@@ -59,7 +37,9 @@ export default class Converter extends LightningElement {
         value: currency,
         rate: rate
       }));
-    this.targetCurrency = this.targetCurrencyOptions[0].value;
+    if (!this.targetCurrency || this.targetCurrency === this.basecurrency) {
+      this.targetCurrency = this.targetCurrencyOptions[0].value;
+    }
 
     this.baseCurrencyOptions = this.rates
       .filter(([currency, rate]) => currency !== this.targetCurrency)
@@ -69,19 +49,7 @@ export default class Converter extends LightningElement {
         value: currency
       }));
 
-    this.baseCurrencyOptions = [
-      {
-        id: this.baseCurrencyOptions.length + 1,
-        label: this.basecurrency,
-        value: this.basecurrency
-      },
-      ...this.baseCurrencyOptions
-    ];
-
-    //   this.data.sort((a, b) => +b.favourite - +a.favourite);
-
     this.doConvert();
-    this.isLoaded = true;
   }
 
   connectedCallback() {
@@ -89,8 +57,6 @@ export default class Converter extends LightningElement {
   }
 
   targetCurrencyEntryChange(event) {
-    // let submitCurrencyChanges = {};
-
     if (event.target.name === "selectTargetCurrency") {
       this.targetCurrency = event.target.value;
       this.doConvert();
@@ -98,14 +64,10 @@ export default class Converter extends LightningElement {
   }
 
   baseCurrencyEntryChange(event) {
-    // let submitCurrencyChanges = {};
-
     if (event.target.name === "selectBaseCurrency") {
       let newBaseCurrency = event.target.value;
 
-      this.isLoaded = false;
       this.baseCurrencyOptions = undefined;
-
       const selectedEvent = new CustomEvent("newbasecurrency", {
         detail: newBaseCurrency
       });
@@ -125,13 +87,5 @@ export default class Converter extends LightningElement {
       ).rate;
       this.tcAmount = this.bcAmount * rate;
     }
-  }
-
-  setError(message) {
-    this.errorMessage = message;
-  }
-
-  clearErrors() {
-    this.errorMessage = undefined;
   }
 }

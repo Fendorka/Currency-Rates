@@ -1,4 +1,5 @@
 import { LightningElement, api } from "lwc";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import getCurrencyData from "@salesforce/apex/CurrencyCalculator_Ctrl.getCurrencyData";
 import setDefaultCurrency from "@salesforce/apex/CurrencyCalculator_Ctrl.setDefaultCurrency";
 import saveFavourites from "@salesforce/apex/UserCurrencyFavourites.saveFavourites";
@@ -11,9 +12,10 @@ export default class CurrencyCalclulatorApp extends LightningElement {
   date;
   favourites = [];
   error;
+  isLoading;
 
   get isReady() {
-    return this.data.length || this.error;
+    return this.data.length || this.error || this.isLoading;
   }
 
   connectedCallback() {
@@ -21,23 +23,20 @@ export default class CurrencyCalclulatorApp extends LightningElement {
   }
 
   getRates() {
+    // this.isLoading = true;
     getCurrencyData({ baseCurrency: this.base })
       .then((response) => {
         if (!response) {
           this.error = "Fetched currency data is empty";
         }
-
         let currencyDataModel = JSON.parse(response);
-
         this.base = currencyDataModel.rates.base;
-        this.date =
-          "Last updated: " +
-          currencyDataModel.rates.date +
-          " " +
-          new Date().toLocaleTimeString();
+        this.date = `Last updated: ${
+          currencyDataModel.rates.date
+        } ${new Date().toLocaleTimeString()}`;
         this.data = Object.entries(currencyDataModel.rates.rates);
         if (!this.data.length) {
-          this.error = "Fetched currency data is empty";
+          this.showError("Fetched currency data is empty");
         }
 
         if (currencyDataModel.favourites) {
@@ -45,39 +44,39 @@ export default class CurrencyCalclulatorApp extends LightningElement {
         } else {
           this.favourites = [];
         }
+        // this.isLoading = false;
       })
       .catch((error) => {
-        console.error("API error: ", error);
-        this.error = "Error: " + error.toString();
+        this.error = `Error: ${error.toString()}`;
+        this.showError("Fetched currency data is empty");
       });
   }
 
   handleBaseCurrencyChange(event) {
+    this.isLoading = true;
     this.base = event.detail;
     this.data = [];
+    console.log("handleBaseCurrencyChange 100  this.base", this.base);
 
-    console.log("handleBaseCurrencyChange", this.base);
+    // console.log("handleBaseCurrencyChange 102", this.base);
 
-    setDefaultCurrency({ defaultCurrency: this.base })
+    setDefaultCurrency({ defaultCurrency: event.detail })
       .then((response) => {
-        // this.base = response.base;
-        this.date =
-          "Last updated: " +
-          response.date +
-          " " +
-          new Date().toLocaleTimeString();
+        // this.base = event.detail;
+        console.log("handleBaseCurrencyChange 200 this.base = ", this.base);
+        this.date = `Last updated: ${
+          response.date
+        } ${new Date().toLocaleTimeString()}`;
         this.data = Object.entries(response.rates);
         if (!this.data.length) {
-          //TODO show toast and reload button
-          this.error = "Fetched currency data is empty";
+          this.showError("Fetched currency data is empty");
         }
+        this.isLoading = false;
       })
       .catch((error) => {
-        console.error("Apex error: ", error);
-        this.error = "Error: " + error;
+        this.error = `Error: ${error.toString()}`;
+        this.showError(error);
       });
-
-    this.getRates();
   }
 
   handleFavouriteCurrencyChange(event) {
@@ -93,8 +92,15 @@ export default class CurrencyCalclulatorApp extends LightningElement {
     saveFavourites({ favouritesList: this.favourites.join(",") })
       .then((response) => {})
       .catch((error) => {
-        console.error("Apex error: ", error);
-        this.error = "Error: " + error;
+        this.showError(error);
       });
+  }
+
+  showError(message) {
+    const event = new ShowToastEvent({
+      title: "Component error",
+      message: message
+    });
+    this.dispatchEvent(event);
   }
 }

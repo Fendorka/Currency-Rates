@@ -1,6 +1,6 @@
 <template>
   <template if:true={isLoaded}>
-    <div class="slds-m-bottom--small">
+    <div class="slds-m-bottom--x_small slds-p-around--medium">
       Base currency:
       <lightning-button
         variant="neutral"
@@ -13,15 +13,22 @@
     <c-simple-pagination tabledata={sortedData} perpage={ratesperpage}>
     </c-simple-pagination>
 
-    <div class="slds-float_right slds-m-top--large">
-      <lightning-badge label={date}></lightning-badge>
-      <lightning-button
-        onclick={refreshRates}
-        label="Update"
-        variant="neutral"
-        class="slds-p-around--xx-small"
-        icon-name="utility:refresh"
-      ></lightning-button>
+    <div
+      class="slds-float_right slds-m-top--large slds-grid slds-grid_vertical slds-grid_align-end"
+    >
+      <lightning-badge
+        label={date}
+        class="slds-m-top--large slds-col"
+      ></lightning-badge>
+      <div class="slds-p-around--xx-small slds-col">
+        <lightning-button
+          onclick={refreshRates}
+          label="Update"
+          variant="neutral"
+          class="slds-float_right"
+          icon-name="utility:refresh"
+        ></lightning-button>
+      </div>
     </div>
   </template>
 

@@ -1,13 +1,13 @@
 import { LightningElement, api } from "lwc";
-import getCurrencyData from "@salesforce/apex/getCurrency.getCurrency";
+import getCurrencyData from "@salesforce/apex/CurrencyCalculator_Ctrl.getCurrencyData";
+import setDefaultCurrency from "@salesforce/apex/CurrencyCalculator_Ctrl.setDefaultCurrency";
 import saveFavourites from "@salesforce/apex/UserCurrencyFavourites.saveFavourites";
-import getFavourites from "@salesforce/apex/UserCurrencyFavourites.getFavourites";
 
 export default class CurrencyCalclulatorApp extends LightningElement {
   @api ratesperpage = 10;
 
   data = [];
-  base = "EUR";
+  base;
   date;
   favourites = [];
   error;
@@ -18,13 +18,49 @@ export default class CurrencyCalclulatorApp extends LightningElement {
 
   connectedCallback() {
     this.getRates();
-    this.getUsersFavourites();
   }
 
   getRates() {
     getCurrencyData({ baseCurrency: this.base })
       .then((response) => {
-        this.base = response.base;
+        if (!response) {
+          this.error = "Fetched currency data is empty";
+        }
+
+        let currencyDataModel = JSON.parse(response);
+
+        this.base = currencyDataModel.rates.base;
+        this.date =
+          "Last updated: " +
+          currencyDataModel.rates.date +
+          " " +
+          new Date().toLocaleTimeString();
+        this.data = Object.entries(currencyDataModel.rates.rates);
+        if (!this.data.length) {
+          this.error = "Fetched currency data is empty";
+        }
+
+        if (currencyDataModel.favourites) {
+          this.favourites = currencyDataModel.favourites.split(",");
+        } else {
+          this.favourites = [];
+        }
+      })
+      .catch((error) => {
+        console.error("API error: ", error);
+        this.error = "Error: " + error.toString();
+      });
+  }
+
+  handleBaseCurrencyChange(event) {
+    this.base = event.detail;
+    this.data = [];
+
+    console.log("handleBaseCurrencyChange", this.base);
+
+    setDefaultCurrency({ defaultCurrency: this.base })
+      .then((response) => {
+        // this.base = response.base;
         this.date =
           "Last updated: " +
           response.date +
@@ -32,39 +68,15 @@ export default class CurrencyCalclulatorApp extends LightningElement {
           new Date().toLocaleTimeString();
         this.data = Object.entries(response.rates);
         if (!this.data.length) {
+          //TODO show toast and reload button
           this.error = "Fetched currency data is empty";
         }
       })
       .catch((error) => {
-        console.error("API error: ", error);
+        console.error("Apex error: ", error);
         this.error = "Error: " + error;
       });
-  }
 
-  getUsersFavourites() {
-    console.log("CurrencyCalclulatorApp::getUsersFavourites:: start");
-
-    getFavourites()
-      .then((response) => {
-        if (response) {
-          this.favourites = response.split(",");
-        } else {
-          this.favourites = [];
-        }
-        console.log(
-          "CurrencyCalclulatorApp::getUsersFavourites:: this.favourites=",
-          this.favourites
-        );
-      })
-      .catch((error) => {
-        console.error("APEX error: ", error);
-        this.error = "Error: " + error;
-      });
-  }
-
-  handleBaseCurrencyChange(event) {
-    this.base = event.detail;
-    this.data = [];
     this.getRates();
   }
 
@@ -78,15 +90,8 @@ export default class CurrencyCalclulatorApp extends LightningElement {
     }
     this.favourites = [...this.favourites];
 
-    console.log("CurrencyCalclulatorApp::getFavourites:: start!");
-
     saveFavourites({ favouritesList: this.favourites.join(",") })
-      .then((response) => {
-        console.log(
-          "CurrencyCalclulatorApp::saveFavourites:: response = ",
-          response
-        );
-      })
+      .then((response) => {})
       .catch((error) => {
         console.error("Apex error: ", error);
         this.error = "Error: " + error;

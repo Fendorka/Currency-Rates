@@ -1,7 +1,18 @@
-public inherited sharing class getCurrency {
+public with sharing class CurrencyCalculator_Ctrl {
   private final static String API_URL = 'https://api.ratesapi.io/api/latest';
+  @AuraEnabled
+  public static String getCurrencyData() {
+    Pinned_currencies__c pc = UserCurrencyFavourites.getFavourites();
+    CurrencyDataModel model = new CurrencyDataModel();
+    model.baseDefault = pc.Default_Currency__c;
+    model.favourites = pc.Currencies__c;
+    model.rates = getRates(model.baseDefault);
+
+    return JSON.serialize(model);
+  }
+
   @AuraEnabled(cacheable=true)
-  public static Map<String, Object> getCurrency(String baseCurrency) {
+  public static Map<String, Object> getRates(String baseCurrency) {
     String requestURL =
       API_URL + (baseCurrency != null ? '?base=' + baseCurrency : '');
 
@@ -41,5 +52,19 @@ public inherited sharing class getCurrency {
     } else {
       return null;
     }
+  }
+
+  @AuraEnabled
+  public static Map<String, Object> setDefaultCurrency(String defaultCurrency) {
+    Map<String, Object> rates = getRates(defaultCurrency);
+    UserCurrencyFavourites.setDefaultCurrency(defaultCurrency);
+
+    return rates;
+  }
+
+  public class CurrencyDataModel {
+    Map<String, Object> rates;
+    String baseDefault;
+    String favourites;
   }
 }

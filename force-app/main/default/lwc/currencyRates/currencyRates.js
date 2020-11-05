@@ -11,13 +11,14 @@ export default class CurrencyRates extends LightningElement {
   isLoaded = false;
   data;
   favouritesApplied;
+  lastUpdateTimestamp;
 
   get sortedData() {
     if (!this.rates || !this.rates.length) {
       return [];
     }
 
-    if (!this.data) {
+    if (!this.data || this.lastUpdateTimestamp !== this.date) {
       this.prepareData();
     } else if (!this.favouritesApplied) {
       this.applyFavourites();
@@ -46,7 +47,7 @@ export default class CurrencyRates extends LightningElement {
     if (!this.favouritesApplied) {
       this.applyFavourites();
     }
-
+    this.lastUpdateTimestamp = this.date;
     this.isLoaded = true;
   }
 

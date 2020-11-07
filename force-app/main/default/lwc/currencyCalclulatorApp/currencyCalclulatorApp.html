@@ -1,6 +1,6 @@
 <template>
   <lightning-card>
-    <template if:true={isReady}>
+    <template if:false={error}>
       <lightning-layout multiple-rows="true">
         <lightning-layout-item
           size="12"
@@ -32,31 +32,29 @@
         </lightning-layout-item>
       </lightning-layout>
     </template>
+
+    <template if:false={isReady}>
+      <template if:false={error}>
+        <div
+          style="
+            position: absolute;
+            height: fit-content;
+            margin: auto;
+            padding: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+          "
+        >
+          <lightning-spinner
+            alternative-text="Loading"
+            size="large"
+          ></lightning-spinner>
+        </div>
+      </template>
+
+      <template if:true={error}> {error} </template>
+    </template>
   </lightning-card>
-
-  <template if:false={isReady}>
-    <template if:false={error}>
-      <div
-        class="slds-is-relative"
-        style="min-height: 50vh; min-width: 50vw; background-color: transparent"
-      >
-        <lightning-spinner
-          alternative-text="Loading"
-          size="large"
-        ></lightning-spinner>
-      </div>
-    </template>
-
-    <template if:true={error}>
-      {error}
-
-      <lightning-button
-        onclick={retry}
-        label="Retry"
-        variant="neutral"
-        class="slds-p-around--xx-small"
-        icon-name="utility:refresh"
-      ></lightning-button>
-    </template>
-  </template>
 </template>

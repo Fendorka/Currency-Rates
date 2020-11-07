@@ -6,5 +6,12 @@
         <target>lightning__Tab</target>
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="ratesperpage" type="Integer" default="20" />
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

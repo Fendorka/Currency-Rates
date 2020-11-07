@@ -15,7 +15,7 @@ export default class CurrencyCalclulatorApp extends LightningElement {
   isLoading;
 
   get isReady() {
-    return this.data.length || this.error || this.isLoading;
+    return (this.data.length || this.error) && !this.isLoading;
   }
 
   connectedCallback() {
@@ -23,7 +23,7 @@ export default class CurrencyCalclulatorApp extends LightningElement {
   }
 
   getRates() {
-    // this.isLoading = true;
+    this.isLoading = true;
     getCurrencyData({ baseCurrency: this.base })
       .then((response) => {
         if (!response) {
@@ -44,11 +44,12 @@ export default class CurrencyCalclulatorApp extends LightningElement {
         } else {
           this.favourites = [];
         }
-        // this.isLoading = false;
+        this.isLoading = false;
       })
       .catch((error) => {
         this.error = `Error: ${error.toString()}`;
         this.showError("Fetched currency data is empty");
+        this.isLoading = false;
       });
   }
 
@@ -56,14 +57,8 @@ export default class CurrencyCalclulatorApp extends LightningElement {
     this.isLoading = true;
     this.base = event.detail;
     this.data = [];
-    console.log("handleBaseCurrencyChange 100  this.base", this.base);
-
-    // console.log("handleBaseCurrencyChange 102", this.base);
-
     setDefaultCurrency({ defaultCurrency: event.detail })
       .then((response) => {
-        // this.base = event.detail;
-        console.log("handleBaseCurrencyChange 200 this.base = ", this.base);
         this.date = `Last updated: ${
           response.date
         } ${new Date().toLocaleTimeString()}`;
@@ -76,6 +71,7 @@ export default class CurrencyCalclulatorApp extends LightningElement {
       .catch((error) => {
         this.error = `Error: ${error.toString()}`;
         this.showError(error);
+        this.isLoading = false;
       });
   }
 

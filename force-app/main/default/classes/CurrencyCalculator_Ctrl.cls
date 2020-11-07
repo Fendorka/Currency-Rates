@@ -44,7 +44,6 @@ public with sharing class CurrencyCalculator_Ctrl {
     Map<String, Object> mapJsonData = new Map<String, Object>();
     if (!String.isBlank(strResponse)) {
       mapJsonData = (Map<String, Object>) JSON.deserializeUntyped(strResponse);
-      // System.debug('mapJsonData ===> ' + mapJsonData);
     }
 
     if (!mapJsonData.isEmpty()) {

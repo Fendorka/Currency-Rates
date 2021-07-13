@@ -1,0 +1,60 @@
+<template>
+  <lightning-card>
+    <template if:false={error}>
+      <lightning-layout multiple-rows="true">
+        <lightning-layout-item
+          size="12"
+          medium-device-size="6"
+          padding="around-small"
+        >
+          <c-currency-rates
+            rates={data}
+            date={date}
+            base={base}
+            favourites={favourites}
+            ratesperpage={ratesperpage}
+            onnewbasecurrency={handleBaseCurrencyChange}
+            ontogglefavourite={handleFavouriteCurrencyChange}
+          >
+          </c-currency-rates>
+        </lightning-layout-item>
+
+        <lightning-layout-item
+          size="12"
+          medium-device-size="6"
+          padding="around-small"
+        >
+          <c-converter
+            rates={data}
+            basecurrency={base}
+            onnewbasecurrency={handleBaseCurrencyChange}
+          ></c-converter>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+
+    <template if:false={isReady}>
+      <template if:false={error}>
+        <div
+          style="
+            position: absolute;
+            height: fit-content;
+            margin: auto;
+            padding: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+          "
+        >
+          <lightning-spinner
+            alternative-text="Loading"
+            size="large"
+          ></lightning-spinner>
+        </div>
+      </template>
+
+      <template if:true={error}> {error} </template>
+    </template>
+  </lightning-card>
+</template>

@@ -1,17 +1,43 @@
 <template>
-    <div style="height: 90%">
-        <lightning-datatable
-                label="Currency Pairs"
-                key-field="id"
-                data={data}
-                columns={columns}
-                hide-checkbox-column
-                resize-column-disabled>
-        </lightning-datatable>
+  <template if:true={isLoaded}>
+    <div class="slds-m-bottom--x_small slds-p-around--medium">
+      Base currency:
+      <lightning-button
+        variant="neutral"
+        label={base}
+        class="slds-p-around--medium"
+        onclick={changeBaseCurrency}
+      ></lightning-button>
     </div>
-    <div class="slds-align_absolute-center">
-        <lightning-badge label={base}></lightning-badge>
-        <lightning-button onclick={getRates} label="Update" variant="brand" icon-name="action:update"></lightning-button>
-        <lightning-badge label={date}></lightning-badge>
+
+    <c-simple-pagination tabledata={sortedData} perpage={ratesperpage}>
+    </c-simple-pagination>
+
+    <div
+      class="slds-float_right slds-m-top--large slds-grid slds-grid_vertical slds-grid_align-end"
+    >
+      <lightning-badge
+        label={date}
+        class="slds-m-top--large slds-col"
+      ></lightning-badge>
+      <div class="slds-p-around--xx-small slds-col">
+        <lightning-button
+          onclick={refreshRates}
+          label="Update"
+          variant="neutral"
+          class="slds-float_right"
+          icon-name="utility:refresh"
+        ></lightning-button>
+      </div>
     </div>
+  </template>
+
+  <template if:true={isShownChooseCurrencyModal}>
+    <c-choose-currency-modal
+      currencydata={sortedData}
+      ontogglefavourite={handleFavouriteCurrencyChange}
+      onnewbasecurrency={handleBaseCurrencyChange}
+      onsetmodalvisibility={showChooseCurrencyModal}
+    ></c-choose-currency-modal>
+  </template>
 </template>
